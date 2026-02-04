@@ -1,5 +1,8 @@
 # Arc SidePanel Patch
 
+<img width="1728" height="1084" alt="image" src="https://github.com/user-attachments/assets/d7d9509e-8ba7-4964-91d5-c4e6b8ebf35a" />
+
+
 Make `chrome.sidePanel` extensions work in [Arc browser](https://arc.net).
 
 Arc never shipped support for the Chrome Side Panel API, so extensions like Claude, Grammarly, and others that use `chrome.sidePanel` don't work. This project fixes that by injecting a polyfill into every extension at runtime.
