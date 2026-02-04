@@ -8,7 +8,7 @@ export function getPolyfillPayload(): string {
   if (cachedPayload) return cachedPayload;
 
   const require = createRequire(import.meta.url);
-  const mainPath = require.resolve("@dhravya/chrome-sidepanel-polyfill");
+  const mainPath = require.resolve("@avp1598/dia-sidepanel-polyfill");
   const bundlePath = join(dirname(mainPath), "index.iife.global.js");
 
   cachedPayload = readFileSync(bundlePath, "utf-8");

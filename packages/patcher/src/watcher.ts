@@ -1,5 +1,5 @@
 import { injectIntoTarget } from "./injector";
-import { connectToTarget } from "./cdp";
+import { listTargets, connectToTarget } from "./cdp";
 
 async function connectWithRetry(port: number, targetId: string, retries = 3): Promise<any> {
   for (let i = 0; i < retries; i++) {
@@ -12,29 +12,39 @@ async function connectWithRetry(port: number, targetId: string, retries = 3): Pr
   }
 }
 
-export async function watchAndInject(browserClient: any, port: number): Promise<void> {
-  browserClient.Target.targetCreated(async (params: any) => {
-    const { targetInfo } = params;
+// Track which targets we've already injected into
+const injectedTargets = new Set<string>();
 
-    const isExtensionWorker =
-      targetInfo.url?.startsWith("chrome-extension://") &&
-      (targetInfo.type === "service_worker" || targetInfo.type === "background_page");
+async function injectNewTargets(port: number): Promise<void> {
+  const targets = await listTargets(port);
 
-    if (!isExtensionWorker) return;
+  for (const target of targets) {
+    if (injectedTargets.has(target.id)) continue;
 
-    console.log(`[inject] New extension target: ${targetInfo.title} (${targetInfo.url})`);
+    console.log(`[inject] New extension target: ${target.title} (${target.url})`);
 
     try {
-      const client = await connectWithRetry(port, targetInfo.targetId);
+      const client = await connectWithRetry(port, target.id);
       await injectIntoTarget(client);
-      console.log(`[inject] Polyfill injected into ${targetInfo.title}`);
+      injectedTargets.add(target.id);
+      console.log(`[inject] Polyfill injected into ${target.title}`);
       await client.close();
     } catch (e) {
-      console.error(`[inject] Failed for ${targetInfo.title}:`, e);
+      console.error(`[inject] Failed for ${target.title}:`, e);
     }
-  });
+  }
+}
 
-  await browserClient.Target.setDiscoverTargets({ discover: true });
+export function watchAndInject(port: number): void {
+  // Dia blocks Target.setDiscoverTargets, so we use polling instead
+  console.log("[watch] Watching for extension service worker (re)starts (polling mode)...");
 
-  console.log("[watch] Watching for extension service worker (re)starts...");
+  // Poll every 2 seconds for new extension targets
+  setInterval(async () => {
+    try {
+      await injectNewTargets(port);
+    } catch (e) {
+      // Silently ignore polling errors (browser might be temporarily unavailable)
+    }
+  }, 2000);
 }

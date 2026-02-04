@@ -1,6 +1,6 @@
 import { program } from "commander";
 import { launchDia, waitForDebugger } from "./launcher";
-import { connectToBrowser, listTargets, connectToTarget } from "./cdp";
+import { listTargets, connectToTarget } from "./cdp";
 import { injectIntoTarget } from "./injector";
 import { watchAndInject } from "./watcher";
 import { patchExtensionManifests } from "./manifest-patcher";
@@ -31,8 +31,8 @@ async function run(opts: { port: string; launch?: boolean }) {
     process.exit(1);
   }
 
-  const browser = await connectToBrowser(port);
-  await watchAndInject(browser, port);
+  // Start watching for new extension targets (uses polling since Dia blocks CDP events)
+  watchAndInject(port);
 
   const targets = await listTargets(port);
   console.log(`Found ${targets.length} extension target(s)`);
@@ -56,9 +56,8 @@ async function run(opts: { port: string; launch?: boolean }) {
 
   console.log("\nPatcher is running. Press Ctrl+C to stop.\n");
 
-  process.on("SIGINT", async () => {
+  process.on("SIGINT", () => {
     console.log("\nShutting down...");
-    await browser.close();
     process.exit(0);
   });
 }

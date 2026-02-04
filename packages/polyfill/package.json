@@ -1,8 +1,8 @@
 {
   "name": "@avp1598/dia-sidepanel-polyfill",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Drop-in polyfill for chrome.sidePanel API — makes sidebar extensions work in Dia browser",
-  "author": "Ankit Prajapati",
+  "author": "avp1598",
   "license": "MIT",
   "repository": {
     "type": "git",
