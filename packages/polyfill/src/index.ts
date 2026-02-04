@@ -20,4 +20,13 @@ export function install({ force = false } = {}): boolean {
 declare const ServiceWorkerGlobalScope: any;
 if (typeof window !== "undefined" || typeof ServiceWorkerGlobalScope !== "undefined") {
   install({ force: true });
+
+  // The extension's init code already called setPanelBehavior before we were injected,
+  // so the click handler was never registered. Auto-register it if the manifest has side_panel.
+  try {
+    const manifest = chrome.runtime.getManifest() as any;
+    if (manifest?.side_panel?.default_path) {
+      (chrome as any).sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+    }
+  } catch {}
 }

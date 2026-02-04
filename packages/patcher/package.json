@@ -1,6 +1,6 @@
 {
   "name": "@dhravya/arc-sidepanel-patcher",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "Make chrome.sidePanel extensions work in Arc browser — patches all installed extensions automatically",
   "author": "Dhravya Shah",
   "license": "MIT",

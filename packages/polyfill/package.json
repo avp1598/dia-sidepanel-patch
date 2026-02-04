@@ -1,6 +1,6 @@
 {
   "name": "@dhravya/chrome-sidepanel-polyfill",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Drop-in polyfill for chrome.sidePanel API — makes sidebar extensions work in Arc browser",
   "author": "Dhravya Shah",
   "license": "MIT",

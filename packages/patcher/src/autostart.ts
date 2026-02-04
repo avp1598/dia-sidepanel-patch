@@ -33,10 +33,18 @@ pkill -f "arc-sidepanel-patcher" 2>/dev/null
 # If Arc is running without CDP, quit and relaunch
 if pgrep -x Arc >/dev/null && ! curl -s "http://127.0.0.1:$PORT/json/version" >/dev/null 2>&1; then
   osascript -e 'tell application "Arc" to quit' 2>/dev/null
-  sleep 2
+  # Wait until Arc is fully gone
+  for i in $(seq 1 20); do
+    pgrep -x Arc >/dev/null || break
+    sleep 0.5
+  done
+  sleep 1
 fi
 
-"$ARC" --remote-debugging-port=$PORT &
+# Only launch if Arc isn't already running with CDP
+if ! curl -s "http://127.0.0.1:$PORT/json/version" >/dev/null 2>&1; then
+  "$ARC" --remote-debugging-port=$PORT &
+fi
 
 for i in $(seq 1 30); do
   curl -s "http://127.0.0.1:$PORT/json/version" >/dev/null 2>&1 && break
