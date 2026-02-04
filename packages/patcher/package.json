@@ -1,0 +1,37 @@
+{
+  "name": "@dhravya/arc-sidepanel-patcher",
+  "version": "0.1.4",
+  "description": "Make chrome.sidePanel extensions work in Arc browser — patches all installed extensions automatically",
+  "author": "Dhravya Shah",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dhravya/arc-sidepanel-patch",
+    "directory": "packages/patcher"
+  },
+  "homepage": "https://github.com/dhravya/arc-sidepanel-patch#readme",
+  "bugs": "https://github.com/dhravya/arc-sidepanel-patch/issues",
+  "keywords": ["arc", "browser", "chrome", "extension", "sidepanel", "cdp", "cli"],
+  "engines": { "node": ">=18" },
+  "os": ["darwin"],
+  "type": "module",
+  "bin": {
+    "arc-sidepanel-patcher": "dist/cli.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "chrome-remote-interface": "^0.33.2",
+    "commander": "^12.0.0",
+    "@dhravya/chrome-sidepanel-polyfill": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}

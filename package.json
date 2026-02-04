@@ -1,0 +1,8 @@
+{
+  "name": "arc-sidepanel-patch",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r build",
+    "clean": "pnpm -r clean"
+  }
+}
