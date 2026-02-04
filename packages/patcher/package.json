@@ -1,33 +1,33 @@
 {
-  "name": "@dhravya/arc-sidepanel-patcher",
-  "version": "0.1.6",
-  "description": "Make chrome.sidePanel extensions work in Arc browser — patches all installed extensions automatically",
-  "author": "Dhravya Shah",
+  "name": "@avp1598/dia-sidepanel-patcher",
+  "version": "0.1.0",
+  "description": "Make chrome.sidePanel extensions work in Dia browser — patches all installed extensions automatically",
+  "author": "Ankit Prajapati",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dhravya/arc-sidepanel-patch",
+    "url": "https://github.com/avp1598/dia-sidepanel-patch",
     "directory": "packages/patcher"
   },
-  "homepage": "https://github.com/dhravya/arc-sidepanel-patch#readme",
-  "bugs": "https://github.com/dhravya/arc-sidepanel-patch/issues",
-  "keywords": ["arc", "browser", "chrome", "extension", "sidepanel", "cdp", "cli"],
+  "homepage": "https://github.com/avp1598/dia-sidepanel-patch#readme",
+  "bugs": "https://github.com/avp1598/dia-sidepanel-patch/issues",
+  "keywords": ["dia", "browser", "chrome", "extension", "sidepanel", "cdp", "cli"],
   "engines": { "node": ">=18" },
   "os": ["darwin"],
   "type": "module",
   "bin": {
-    "arc-sidepanel-patcher": "dist/cli.js"
+    "dia-sidepanel-patcher": "dist/cli.js"
   },
   "files": ["dist"],
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf dist",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "bun run build"
   },
   "dependencies": {
     "chrome-remote-interface": "^0.33.2",
     "commander": "^12.0.0",
-    "@dhravya/chrome-sidepanel-polyfill": "workspace:*"
+    "@avp1598/dia-sidepanel-polyfill": "*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

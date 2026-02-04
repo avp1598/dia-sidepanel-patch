@@ -2,11 +2,11 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { homedir } from "node:os";
 
-const ARC_EXTENSIONS_DIR = join(
+const DIA_EXTENSIONS_DIR = join(
   homedir(),
   "Library",
   "Application Support",
-  "Arc",
+  "Dia",
   "User Data",
   "Default",
   "Extensions"
@@ -15,15 +15,15 @@ const ARC_EXTENSIONS_DIR = join(
 const PATCH_MARKER = "__sidePanelPolyfill_patched";
 
 export function patchExtensionManifests(): string[] {
-  if (!existsSync(ARC_EXTENSIONS_DIR)) {
-    console.warn(`[manifest] Extensions directory not found: ${ARC_EXTENSIONS_DIR}`);
+  if (!existsSync(DIA_EXTENSIONS_DIR)) {
+    console.warn(`[manifest] Extensions directory not found: ${DIA_EXTENSIONS_DIR}`);
     return [];
   }
 
   const patched: string[] = [];
 
-  for (const extId of readdirSync(ARC_EXTENSIONS_DIR)) {
-    const extDir = join(ARC_EXTENSIONS_DIR, extId);
+  for (const extId of readdirSync(DIA_EXTENSIONS_DIR)) {
+    const extDir = join(DIA_EXTENSIONS_DIR, extId);
     let versions: string[];
     try {
       versions = readdirSync(extDir).filter((v) => !v.startsWith("."));

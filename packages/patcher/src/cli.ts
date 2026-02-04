@@ -1,5 +1,5 @@
 import { program } from "commander";
-import { launchArc, waitForDebugger } from "./launcher";
+import { launchDia, waitForDebugger } from "./launcher";
 import { connectToBrowser, listTargets, connectToTarget } from "./cdp";
 import { injectIntoTarget } from "./injector";
 import { watchAndInject } from "./watcher";
@@ -12,10 +12,10 @@ async function run(opts: { port: string; launch?: boolean }) {
   patchExtensionManifests();
 
   if (opts.launch) {
-    launchArc(port);
-    console.log("Waiting for Arc to start...");
+    launchDia(port);
+    console.log("Waiting for Dia to start...");
     await waitForDebugger(port);
-    console.log("Arc is ready.\n");
+    console.log("Dia is ready.\n");
   }
 
   try {
@@ -23,10 +23,10 @@ async function run(opts: { port: string; launch?: boolean }) {
   } catch {
     console.error(
       `Cannot connect to CDP on port ${port}.\n\n` +
-      `Start Arc with debugging enabled:\n` +
-      `  /Applications/Arc.app/Contents/MacOS/Arc --remote-debugging-port=${port}\n\n` +
+      `Start Dia with debugging enabled:\n` +
+      `  /Applications/Dia.app/Contents/MacOS/Dia --remote-debugging-port=${port}\n\n` +
       `Or use --launch to start it automatically:\n` +
-      `  arc-sidepanel-patcher --launch\n`
+      `  dia-sidepanel-patcher --launch\n`
     );
     process.exit(1);
   }
@@ -64,16 +64,16 @@ async function run(opts: { port: string; launch?: boolean }) {
 }
 
 program
-  .name("arc-sidepanel-patcher")
-  .description("Make chrome.sidePanel extensions work in Arc browser")
+  .name("dia-sidepanel-patcher")
+  .description("Make chrome.sidePanel extensions work in Dia browser")
   .version("0.1.0")
   .option("-p, --port <number>", "CDP debugging port", "9222")
-  .option("-l, --launch", "Launch Arc with debugging port enabled")
+  .option("-l, --launch", "Launch Dia with debugging port enabled")
   .action(run);
 
 program
   .command("install")
-  .description("Auto-start patcher every time Arc launches (macOS LaunchAgent)")
+  .description("Auto-start patcher every time Dia launches (macOS LaunchAgent)")
   .option("-p, --port <number>", "CDP debugging port", "9222")
   .action((opts) => install(parseInt(opts.port, 10)));
 

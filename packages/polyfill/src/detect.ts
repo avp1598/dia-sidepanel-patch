@@ -1,12 +1,7 @@
-export function isArc(): boolean {
+export function isDia(): boolean {
   try {
-    // Arc injects this CSS custom property into all pages
-    if (typeof document !== "undefined") {
-      return getComputedStyle(document.documentElement)
-        .getPropertyValue("--arc-palette-background")
-        .trim() !== "";
-    }
-    // In service worker context, check the userAgent or assume Arc if sidePanel is missing
+    // In Dia, chrome.sidePanel is undefined - use this as the detection method
+    // since we don't know if Dia injects any CSS custom properties
     return typeof chrome !== "undefined" && chrome.sidePanel === undefined;
   } catch {
     return false;

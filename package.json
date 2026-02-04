@@ -1,8 +1,9 @@
 {
-  "name": "arc-sidepanel-patch",
+  "name": "dia-sidepanel-patch",
   "private": true,
+  "workspaces": ["packages/*"],
   "scripts": {
-    "build": "pnpm -r build",
-    "clean": "pnpm -r clean"
+    "build": "bun run --filter '*' build",
+    "clean": "bun run --filter '*' clean"
   }
 }

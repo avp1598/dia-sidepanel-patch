@@ -1,17 +1,17 @@
 {
-  "name": "@dhravya/chrome-sidepanel-polyfill",
-  "version": "0.1.2",
-  "description": "Drop-in polyfill for chrome.sidePanel API — makes sidebar extensions work in Arc browser",
-  "author": "Dhravya Shah",
+  "name": "@avp1598/dia-sidepanel-polyfill",
+  "version": "0.1.0",
+  "description": "Drop-in polyfill for chrome.sidePanel API — makes sidebar extensions work in Dia browser",
+  "author": "Ankit Prajapati",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dhravya/arc-sidepanel-patch",
+    "url": "https://github.com/avp1598/dia-sidepanel-patch",
     "directory": "packages/polyfill"
   },
-  "homepage": "https://github.com/dhravya/arc-sidepanel-patch#readme",
-  "bugs": "https://github.com/dhravya/arc-sidepanel-patch/issues",
-  "keywords": ["chrome", "extension", "sidepanel", "polyfill", "arc", "browser"],
+  "homepage": "https://github.com/avp1598/dia-sidepanel-patch#readme",
+  "bugs": "https://github.com/avp1598/dia-sidepanel-patch/issues",
+  "keywords": ["chrome", "extension", "sidepanel", "polyfill", "dia", "browser"],
   "engines": { "node": ">=18" },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -28,7 +28,7 @@
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf dist",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "bun run build"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.287",

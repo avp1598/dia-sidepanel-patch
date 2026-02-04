@@ -1,12 +1,12 @@
-import { hasNativeSidePanel, isArc } from "./detect";
+import { hasNativeSidePanel, isDia } from "./detect";
 import { createSidePanelNamespace } from "./api";
 
 export { ChromeEvent } from "./event";
-export { isArc, hasNativeSidePanel } from "./detect";
+export { isDia, hasNativeSidePanel } from "./detect";
 export type { SidePanelOptions, PanelBehavior, OpenOptions } from "./types";
 
 export function install({ force = false } = {}): boolean {
-  if (!force && hasNativeSidePanel() && !isArc()) return false;
+  if (!force && hasNativeSidePanel() && !isDia()) return false;
 
   if (typeof chrome === "undefined") {
     (globalThis as any).chrome = {};

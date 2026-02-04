@@ -1,18 +1,18 @@
 import { spawn, type ChildProcess } from "node:child_process";
 import { platform } from "node:os";
 
-const ARC_PATHS: Record<string, string> = {
-  darwin: "/Applications/Arc.app/Contents/MacOS/Arc",
+const DIA_PATHS: Record<string, string> = {
+  darwin: "/Applications/Dia.app/Contents/MacOS/Dia",
 };
 
-export function launchArc(port: number): ChildProcess {
-  const arcPath = ARC_PATHS[platform()];
-  if (!arcPath) {
+export function launchDia(port: number): ChildProcess {
+  const diaPath = DIA_PATHS[platform()];
+  if (!diaPath) {
     throw new Error(`Unsupported platform: ${platform()}. Only macOS is supported.`);
   }
 
-  console.log(`Launching Arc with --remote-debugging-port=${port}`);
-  const child = spawn(arcPath, [`--remote-debugging-port=${port}`], {
+  console.log(`Launching Dia with --remote-debugging-port=${port}`);
+  const child = spawn(diaPath, [`--remote-debugging-port=${port}`], {
     stdio: "ignore",
     detached: true,
   });

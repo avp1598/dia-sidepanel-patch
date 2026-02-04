@@ -1,26 +1,23 @@
-# Arc SidePanel Patch
+# Dia SidePanel Patch
 
-<img width="1728" height="1084" alt="image" src="https://github.com/user-attachments/assets/d7d9509e-8ba7-4964-91d5-c4e6b8ebf35a" />
+Make `chrome.sidePanel` extensions work in [Dia browser](https://dia.dev).
 
-
-Make `chrome.sidePanel` extensions work in [Arc browser](https://arc.net).
-
-Arc never shipped support for the Chrome Side Panel API, so extensions like Claude, Grammarly, and others that use `chrome.sidePanel` don't work. This project fixes that by injecting a polyfill into every extension at runtime.
+Dia doesn't support the Chrome Side Panel API, so extensions like Claude, Grammarly, and others that use `chrome.sidePanel` don't work. This project fixes that by injecting a polyfill into every extension at runtime.
 
 ## Quick Start
 
 ```bash
-# Make sure Arc is running with the debugging port
-/Applications/Arc.app/Contents/MacOS/Arc --remote-debugging-port=9222
+# Make sure Dia is running with the debugging port
+/Applications/Dia.app/Contents/MacOS/Dia --remote-debugging-port=9222
 
 # Run the patcher (keeps running to catch extension restarts)
-npx @dhravya/arc-sidepanel-patcher
+npx @avp1598/dia-sidepanel-patcher
 ```
 
-Or launch Arc and patch in one command:
+Or launch Dia and patch in one command:
 
 ```bash
-npx @dhravya/arc-sidepanel-patcher --launch
+npx @avp1598/dia-sidepanel-patcher --launch
 ```
 
 ## Auto-Start on Login
@@ -28,22 +25,22 @@ npx @dhravya/arc-sidepanel-patcher --launch
 Install globally and set up auto-start so you never have to think about it:
 
 ```bash
-npm install -g @dhravya/arc-sidepanel-patcher
+npm install -g @avp1598/dia-sidepanel-patcher
 
 # This creates a macOS LaunchAgent that runs the patcher every time you log in
-arc-sidepanel-patcher install
+dia-sidepanel-patcher install
 
 # To remove
-arc-sidepanel-patcher uninstall
+dia-sidepanel-patcher uninstall
 
 # Check status
-arc-sidepanel-patcher status
+dia-sidepanel-patcher status
 ```
 
 ## How It Works
 
-1. **Connects to Arc** via Chrome DevTools Protocol (CDP) on port 9222
-2. **Discovers all extension service workers** running in Arc
+1. **Connects to Dia** via Chrome DevTools Protocol (CDP) on port 9222
+2. **Discovers all extension service workers** running in Dia
 3. **Injects a polyfill** that replaces the broken `chrome.sidePanel` with a working implementation
 4. **Watches for restarts** — when an extension's service worker restarts, the polyfill is re-injected
 
@@ -57,14 +54,14 @@ Side panels open as popup windows positioned next to the browser window, visuall
 
 ## For Extension Developers
 
-If you develop a Chrome extension and want it to work in Arc, you can use the polyfill library directly:
+If you develop a Chrome extension and want it to work in Dia, you can use the polyfill library directly:
 
 ```bash
-npm install @dhravya/chrome-sidepanel-polyfill
+npm install @avp1598/dia-sidepanel-polyfill
 ```
 
 ```typescript
-import { install } from "@dhravya/chrome-sidepanel-polyfill";
+import { install } from "@avp1598/dia-sidepanel-polyfill";
 
 // Only installs if native chrome.sidePanel is missing or broken
 install();
@@ -79,7 +76,7 @@ Or load the IIFE bundle in your extension's service worker for zero-config setup
 {
   "background": {
     "service_worker": "service-worker.js",
-    "scripts": ["node_modules/@dhravya/chrome-sidepanel-polyfill/dist/index.iife.global.js", "service-worker.js"]
+    "scripts": ["node_modules/@avp1598/dia-sidepanel-polyfill/dist/index.iife.global.js", "service-worker.js"]
   }
 }
 ```
@@ -87,22 +84,22 @@ Or load the IIFE bundle in your extension's service worker for zero-config setup
 ## CLI Reference
 
 ```
-arc-sidepanel-patcher [options]         Run the patcher
-arc-sidepanel-patcher install [options] Auto-start on login
-arc-sidepanel-patcher uninstall         Remove auto-start
-arc-sidepanel-patcher status            Check auto-start status
+dia-sidepanel-patcher [options]         Run the patcher
+dia-sidepanel-patcher install [options] Auto-start on login
+dia-sidepanel-patcher uninstall         Remove auto-start
+dia-sidepanel-patcher status            Check auto-start status
 
 Options:
   -p, --port <number>  CDP debugging port (default: 9222)
-  -l, --launch         Launch Arc with debugging port enabled
+  -l, --launch         Launch Dia with debugging port enabled
   -V, --version        Show version
   -h, --help           Show help
 ```
 
 ## Limitations
 
-- **macOS only** — Arc is macOS-only
-- **Requires CDP** — Arc must be started with `--remote-debugging-port`
+- **macOS only** — Dia is macOS-only
+- **Requires CDP** — Dia must be started with `--remote-debugging-port`
 - **Popup windows, not embedded** — Side panels open as positioned popup windows rather than embedded iframes (Chrome's internal `web_accessible_resources` cache prevents the iframe approach for installed extensions)
 - **Race condition on first inject** — The polyfill is injected after the extension's service worker starts, so the initial `chrome.sidePanel` reference is briefly the broken native one. Works because extensions read `chrome.sidePanel` lazily at click time, not at init time.
 
@@ -110,16 +107,16 @@ Options:
 
 | Package | Description |
 |---------|-------------|
-| [`@dhravya/arc-sidepanel-patcher`](./packages/patcher) | CLI tool — patches all extensions in Arc |
-| [`@dhravya/chrome-sidepanel-polyfill`](./packages/polyfill) | Library — drop-in polyfill for your own extensions |
+| [`@avp1598/dia-sidepanel-patcher`](./packages/patcher) | CLI tool — patches all extensions in Dia |
+| [`@avp1598/dia-sidepanel-polyfill`](./packages/polyfill) | Library — drop-in polyfill for your own extensions |
 
 ## Development
 
 ```bash
-git clone https://github.com/dhravya/arc-sidepanel-patch
-cd arc-sidepanel-patch
-pnpm install
-pnpm build
+git clone https://github.com/avp1598/dia-sidepanel-patch
+cd dia-sidepanel-patch
+bun install
+bun run build
 ```
 
 ## License
